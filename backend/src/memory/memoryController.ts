@@ -11,7 +11,7 @@ export class MemoryController {
   }
 
   async getById(req: Request, res: Response) {
-    const { id = '' } = req.params;
+    const { id } = req.params;
     const memory = await this.memoryService.getById(id);
 
     return res.json(memory);
@@ -25,13 +25,13 @@ export class MemoryController {
   }
 
   async create(req: Request, res: Response) {
-    const { content, coverUrl, isPublic, userId } = req.body;
+    const { content, coverUrl, isPublic } = req.body;
 
     const memory = await this.memoryService.create({
       content,
       coverUrl,
       isPublic,
-      userId,
+      userId: req.userId,
     });
 
     return res.json(memory);

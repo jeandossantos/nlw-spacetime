@@ -1,3 +1,4 @@
+import { CustomException } from '../exceptions/CustomException';
 import { CreateMemoryDto, UpdateMemoryDto } from './@types/memoryDto';
 import { MemoryRepository } from './memoryRepository';
 import { z as zod } from 'zod';
@@ -21,7 +22,11 @@ export class MemoryService {
 
     const { id: memoryId } = mySchema.parse(id);
 
-    return await this.memoryRepository.getById(memoryId);
+    const memory = await this.memoryRepository.getById(memoryId);
+
+    if (!memory?.isPublic && memory?.id !== memoryId) {
+      throw new CustomException('Unauthorized', 401);
+    }
   }
 
   async create(dto: CreateMemoryDto) {

@@ -18,12 +18,9 @@ export class MemoryRepository {
   }
 
   async getById(id: string) {
-    return this.prisma.memories.findMany({
+    return this.prisma.memories.findUnique({
       where: {
         id,
-      },
-      orderBy: {
-        createdAt: 'asc',
       },
     });
   }
