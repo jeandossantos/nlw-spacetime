@@ -1,5 +1,4 @@
 import { getUserFromCookie } from '@/lib/auth';
-import { User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -20,13 +19,13 @@ export default function Profile() {
       </div>
       <p className="text-sm leading-snug max-w-[140px]">
         {name}
-        <Link
-          href={'#'}
+        <a
+          href={'/api/auth/logout'}
           className="text-red-400 block transition-colors hover:text-red-300"
         >
           {' '}
           Quero sair{' '}
-        </Link>
+        </a>
       </p>
     </div>
   );

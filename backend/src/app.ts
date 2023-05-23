@@ -11,19 +11,23 @@ import { ZodError } from 'zod';
 import { authRoutes } from './routes/auth';
 import { ensureAuthenticated } from './middleware/isAuthenticated';
 import { CustomException } from './exceptions/CustomException';
+import { uploadRoutes } from './routes/upload';
+import path from 'path';
 
 const app = express();
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(authRoutes);
+app.use(uploadRoutes);
 app.use(ensureAuthenticated, memoryRoutes);
 app.use(ensureAuthenticated, userRoutes);
 
 app.use(
   (
-    error: ZodError | Error,
+    error: CustomException | ZodError | Error,
     req: Request,
     res: Response,
     next: NextFunction
@@ -39,7 +43,7 @@ app.use(
       return res.status(400).json(error);
     }
 
-    console.error(error.message || error);
+    console.error(error);
 
     return res.status(500).json({
       code: 500,
