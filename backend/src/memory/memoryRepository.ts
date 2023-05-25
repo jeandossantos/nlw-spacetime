@@ -31,7 +31,7 @@ export class MemoryRepository {
         content,
         coverUrl,
         isPublic,
-        userId: userId || '',
+        userId,
       },
     });
   }

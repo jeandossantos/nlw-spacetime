@@ -11,6 +11,7 @@ export class MemoryService {
         id: memory.id,
         coverUrl: memory.coverUrl,
         excerpt: memory.content.substring(0, 115).concat('...'),
+        createdAt: memory.createdAt,
       };
     });
   }
@@ -34,15 +35,16 @@ export class MemoryService {
       content: zod.string(),
       coverUrl: zod.string(),
       isPublic: zod.coerce.boolean().default(false),
+      userId: zod.string().uuid(),
     });
 
-    const { content, coverUrl, isPublic } = mySchema.parse(dto);
+    const { content, coverUrl, isPublic, userId } = mySchema.parse(dto);
 
     const memory = await this.memoryRepository.create({
       content,
       coverUrl,
       isPublic,
-      userId: '',
+      userId,
     });
 
     return memory;

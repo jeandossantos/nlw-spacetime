@@ -2,7 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 
 type IPayload = {
-  id: string;
+  sub: string;
+  name: string;
+  avatarUrl: string;
 };
 
 export function ensureAuthenticated(
@@ -17,9 +19,9 @@ export function ensureAuthenticated(
 
     const [, token] = authToken.split(' ');
 
-    const sub = verify(token, process.env.APP_SECRET!) as IPayload;
+    const payload = verify(token, process.env.APP_SECRET!) as IPayload;
 
-    req.userId = sub.id;
+    req.userId = payload.sub;
 
     return next();
   } catch (error) {
